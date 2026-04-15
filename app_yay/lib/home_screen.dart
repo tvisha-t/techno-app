@@ -26,7 +26,14 @@ const List<Map<String, dynamic>> _placeholderCities = [
 ];
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final ThemeMode themeMode;
+  final ValueChanged<bool> onThemeToggle;
+
+  const HomeScreen({
+    super.key,
+    required this.themeMode,
+    required this.onThemeToggle,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -67,20 +74,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLightMode = widget.themeMode == ThemeMode.light;
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: isLightMode ? Colors.grey[100] : Colors.grey[900],
       appBar: AppBar(
-        backgroundColor: constrr Color(0xFF5B2D8E),
-        title: const Text(
+        // backgroundColor: constrr, Color(0xFF5B2D8E),
+        title: Text(
           'SafeHaven',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: isLightMode ? Colors.black : Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
-          // logout button —-> sends user to login screen
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
+            icon: Icon(Icons.logout, color: isLightMode ? Colors.black : Colors.white),
             onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
           ),
+          Icon(isLightMode ? Icons.light_mode : Icons.dark_mode),
+          Switch(
+            value: isLightMode,
+            onChanged: widget.onThemeToggle,
+          ),
+          Icon(isLightMode ? Icons.dark_mode : Icons.light_mode),
         ],
       ),
       body: Column(

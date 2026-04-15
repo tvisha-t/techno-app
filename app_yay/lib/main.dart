@@ -11,17 +11,30 @@ void main() {
 }
 
 // root widget to set up routing
-class SafeHaven extends StatelessWidget {
+class SafeHaven extends StatefulWidget {
   const SafeHaven({super.key});
+
+  @override
+  State<SafeHaven> createState() => _SafeHavenState();
+}
+
+class _SafeHavenState extends State<SafeHaven> {
+  ThemeMode _themeMode = ThemeMode.dark;
+
+  void _toggleTheme(bool isOn) {
+    setState(() {
+      _themeMode = isOn ? ThemeMode.light : ThemeMode.dark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SafeHaven',
-      debugShowCheckedModeBanner: false, 
-
-      // app-wide color theme
+      debugShowCheckedModeBanner: false,
+      themeMode: _themeMode,
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.grey[100],
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF5B2D8E), // deep purple
           primary: const Color(0xFF5B2D8E),
@@ -29,13 +42,24 @@ class SafeHaven extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-
+      darkTheme: ThemeData(
+        scaffoldBackgroundColor: Colors.grey[900],
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF5B2D8E),
+          primary: const Color(0xFF5B2D8E),
+          secondary: const Color(0xFF9C6FD6),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
       initialRoute: '/login',
-
-      // use to nagivate: Navigator.pushNamed(context, '/home')
       routes: {
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => const MainShell(), // MainShell holds the bottom nav bar
+        '/home': (context) => MainShell(
+          themeMode: _themeMode,
+          onThemeToggle: _toggleTheme,
+        ),
       },
     );
   }
@@ -46,7 +70,14 @@ class SafeHaven extends StatelessWidget {
 // we're just swapping out the body while keeping the bottom nav bar intact
 // ─────────────────────────────────────────────
 class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+  final ThemeMode themeMode;
+  final ValueChanged<bool> onThemeToggle;
+
+  const MainShell({
+    super.key,
+    required this.themeMode,
+    required this.onThemeToggle,
+  });
 
   @override
   State<MainShell> createState() => _MainShellState();
@@ -55,11 +86,23 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    MapScreen(),
-    ReportScreen(),
-    SosScreen(),
+  List<Widget> get _screens => [
+    HomeScreen(
+      themeMode: widget.themeMode,
+      onThemeToggle: widget.onThemeToggle,
+    ),
+    MapScreen(
+      themeMode: widget.themeMode,
+      onThemeToggle: widget.onThemeToggle,
+    ),
+    ReportScreen(
+      themeMode: widget.themeMode,
+      onThemeToggle: widget.onThemeToggle,
+    ),
+    SosScreen(
+      themeMode: widget.themeMode,
+      onThemeToggle: widget.onThemeToggle,
+    ),
   ];
 
   @override
@@ -67,7 +110,6 @@ class _MainShellState extends State<MainShell> {
     return Scaffold(
       // show matching index screen
       body: _screens[_currentIndex],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
 

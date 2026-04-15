@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 // global map screen, rn just placeholder w/ tappable ui
 // todo: integrate a real map package? 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  final ThemeMode themeMode;
+  final ValueChanged<bool> onThemeToggle;
+
+  const MapScreen({
+    super.key,
+    required this.themeMode,
+    required this.onThemeToggle,
+  });
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -54,10 +61,17 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLightMode = widget.themeMode == ThemeMode.light;
     return Scaffold(
+      backgroundColor: isLightMode ? Colors.grey[100] : Colors.grey[900],
       appBar: AppBar(
         backgroundColor: const Color(0xFF5B2D8E),
         title: const Text('safety heat map', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        actions: [
+          Icon(isLightMode ? Icons.light_mode : Icons.dark_mode),
+          Switch(value: isLightMode, onChanged: widget.onThemeToggle),
+          Icon(isLightMode ? Icons.dark_mode : Icons.light_mode),
+        ],
       ),
       body: Column(
         children: [

@@ -4,7 +4,14 @@ import 'package:flutter/material.dart';
 // form collects date, location, type of incident, & description
 // todo: wire up submit button to send data to a database?? trigger push notif to users w/ pinned city
 class ReportScreen extends StatefulWidget {
-  const ReportScreen({super.key});
+  final ThemeMode themeMode;
+  final ValueChanged<bool> onThemeToggle;
+
+  const ReportScreen({
+    super.key,
+    required this.themeMode,
+    required this.onThemeToggle,
+  });
 
   @override
   State<ReportScreen> createState() => _ReportScreenState();
@@ -68,12 +75,18 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLightMode = widget.themeMode == ThemeMode.light;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF5B2D8E),
         title: const Text('report an incident', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        actions: [
+          Icon(isLightMode ? Icons.light_mode : Icons.dark_mode),
+          Switch(value: isLightMode, onChanged: widget.onThemeToggle),
+          Icon(isLightMode ? Icons.dark_mode : Icons.light_mode),
+        ],
       ),
-      backgroundColor: Colors.grey[100],
+      backgroundColor: isLightMode ? Colors.grey[100] : Colors.grey[900],
       body: _submitted ? _buildSuccessView() : _buildForm(),
     );
   }
