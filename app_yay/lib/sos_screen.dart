@@ -5,7 +5,14 @@ import 'package:flutter/material.dart';
 // todo: add real alarm sound & pin-based cancellation
 
 class SosScreen extends StatefulWidget {
-  const SosScreen({super.key});
+  final ThemeMode themeMode;
+  final ValueChanged<bool> onThemeToggle;
+
+  const SosScreen({
+    super.key,
+    required this.themeMode,
+    required this.onThemeToggle,
+  });
 
   @override
   State<SosScreen> createState() => _SosScreenState();
@@ -16,11 +23,17 @@ class _SosScreenState extends State<SosScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLightMode = widget.themeMode == ThemeMode.light;
     return Scaffold(
-      backgroundColor: _sosActivated ? Colors.red[700] : Colors.white,
+      backgroundColor: _sosActivated ? Colors.red[700] : (isLightMode ? Colors.white : Colors.grey[900]),
       appBar: AppBar(
         backgroundColor: _sosActivated ? Colors.red[900] : const Color(0xFF5B2D8E),
         title: const Text('SOS', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        actions: [
+          Icon(isLightMode ? Icons.light_mode : Icons.dark_mode),
+          Switch(value: isLightMode, onChanged: widget.onThemeToggle),
+          Icon(isLightMode ? Icons.dark_mode : Icons.light_mode),
+        ],
       ),
       body: SafeArea(
         child: Center(
