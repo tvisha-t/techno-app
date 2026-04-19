@@ -47,20 +47,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 24),
                 // subtitle alternates depending on state
                 Text(
-                  _isLogin ? 'welcome back!' : 'create your account!',
+                  _isLogin ? 'Welcome back!' : 'Create your account!',
                   style: const TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 const SizedBox(height: 40),
 
                 // username field
-                _buildField(_usernameController, 'username', Icons.person),
+                _buildField(_usernameController, 'Username', Icons.person),
 
                 // phone number field during signup
                 if (!_isLogin) ...[
                   const SizedBox(height: 16),
                   _buildField(
                     _phoneController,
-                    'phone number',
+                    'Phone number',
                     Icons.phone,
                     keyboardType: TextInputType.phone,
                   ),
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16),
 
                 // password field 
-                _buildField(_passwordController, 'password', Icons.lock, obscure: true),
+                _buildField(_passwordController, 'Password', Icons.lock, obscure: true),
                 const SizedBox(height: 32),
 
                 // submit button
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: Text(
-                      _isLogin ? 'log in' : 'sign up',
+                      _isLogin ? 'Log in' : 'Sign up',
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -97,8 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () => setState(() => _isLogin = !_isLogin),
                   child: Text(
                     _isLogin
-                        ? "don't have an account? lets sign you up!"
-                        : 'already have an account? lets log in',
+                        ? "Don't have an account? Lets sign you up!"
+                        : 'Already have an account? Lets log in',
                     style: const TextStyle(color: Colors.white70),
                   ),
                 ),

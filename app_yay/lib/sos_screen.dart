@@ -43,7 +43,7 @@ class _SosScreenState extends State<SosScreen> {
               if (!_sosActivated) ...[
                 // ── idle ───────────────────────────────
                 const Text(
-                  'press the button if you\nneed immediate help',
+                  'Press the button if you\nneed immediate help!!',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18, color: Colors.black54),
                 ),

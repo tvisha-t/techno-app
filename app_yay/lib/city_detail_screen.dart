@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
 
 // opens when a user taps a city card
 // receives 'city' map, name, score, news blurb, level, and other data
 // todo: replace placeholder data w/ real API calls per city
 
 class CityDetailScreen extends StatelessWidget {
-  final Map<String, dynamic> city;
+  final City city;
 
   const CityDetailScreen({super.key, required this.city});
 
   @override
   Widget build(BuildContext context) {
-    final int score = city['score'] as int;
-    final String name = city['name'] as String;
+    final int score = city.score as int;
+    final String name = city.name as String;
 
     // placeholder monthly incident counts (Jan–Dec)
     // toodo: pull from monthly api
@@ -56,8 +57,8 @@ class CityDetailScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    'overall crime levels',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    'Overall crime levels',
+                    style: TextStyle(fontSize: 16, color: Colors.black87),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -69,8 +70,8 @@ class CityDetailScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    city['level'] as String,
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    city.level as String,
+                    style: const TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                 ],
               ),
@@ -79,12 +80,8 @@ class CityDetailScreen extends StatelessWidget {
 
             // ── monthly bar chart ────────────────────────────────
             const Text(
-              'monthly crime stats',
+              'Monthly crime stats',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const Text(
-              'plceholder data · replace w/ api',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
             const SizedBox(height: 12),
             _sectionCard(
@@ -110,7 +107,7 @@ class CityDetailScreen extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               months[i],
-                              style: const TextStyle(fontSize: 9, color: Colors.grey),
+                              style: const TextStyle(fontSize: 9, color: Colors.black54),
                             ),
                           ],
                         ),
@@ -125,41 +122,44 @@ class CityDetailScreen extends StatelessWidget {
             // ── safety tips ──────────────────────────────────────
             // TODO: use ai to generate city-specific tips
             const Text(
-              'safety tips',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Safety reminders -->',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
             const SizedBox(height: 12),
-            _tipCard(Icons.directions_walk, 'avoid walking alone at night in unfamiliar areas'),
-            _tipCard(Icons.phone_android, 'keep your phone charged and share your location'),
-            _tipCard(Icons.group, 'travel with friends when possible, especially after dark'),
+            _tipCard(Icons.directions_walk, 'Avoid walking alone at night in unfamiliar areas.'),
+            _tipCard(Icons.phone_android, 'Keep your phone charged and share your location.'),
+            _tipCard(Icons.group, 'Travel with friends when possible, especially after dark'),
             const SizedBox(height: 24),
 
-            // ── recent news ──────────────────────────────────────
-            // TODO: grab real headlines from a news API filtered by city
+            // ── relevant news ──────────────────────────────────────
             const Text(
-              'relevant news',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Relevant news',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
             const SizedBox(height: 12),
-            _newsCard('police increase patrols near downtown area', '2 days ago'),
-            _newsCard('community safety workshop', '5 days ago'),
-            _newsCard('emergency call boxes installed on campus', '1 week ago'),
+
+            ...List<Widget>.from(
+              city.newsletters.map(
+                (headline) => _newsCard(headline, 'recent'),
+              ),
+            ),
+
             const SizedBox(height: 24),
 
             // ── incident type breakdown ──────────────────────────
             // TODO: grab real incident counts from crime API
             const Text(
-              'recent incidents',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Recent incidents',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
             const SizedBox(height: 12),
             _sectionCard(
               child: Column(
                 children: [
-                  _incidentRow('assaults', 12, 30, Colors.red),
-                  _incidentRow('robberies', 7, 30, Colors.orange),
-                  _incidentRow('vandalism', 18, 30, Colors.amber),
-                  _incidentRow('theft', 24, 30, Colors.blue),
+                  _incidentRow('Assaults: ', 12, 30, Colors.red),
+                  _incidentRow('Robberies', 7, 30, Colors.orange),
+                  _incidentRow('Vandalsim', 18, 30, Colors.amber),
+                  _incidentRow('Theft ', 24, 30, Colors.blue),
                 ],
               ),
             ),
@@ -200,7 +200,9 @@ class CityDetailScreen extends StatelessWidget {
         children: [
           Icon(icon, color: const Color(0xFF5B2D8E)),
           const SizedBox(width: 12),
-          Expanded(child: Text(tip, style: const TextStyle(fontSize: 14))),
+          Expanded(
+            child: Text(tip, style: const TextStyle(fontSize: 14, color: Colors.black87)),
+          ),
         ],
       ),
     );
@@ -226,9 +228,9 @@ class CityDetailScreen extends StatelessWidget {
               children: [
                 Text(
                   headline,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black87),
                 ),
-                Text(timeAgo, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                Text(timeAgo, style: const TextStyle(fontSize: 12, color: Colors.black54)),
               ],
             ),
           ),
@@ -237,7 +239,7 @@ class CityDetailScreen extends StatelessWidget {
     );
   }
 
-    // scaling logic for incident type bars — takes count, max count, and color
+  // scaling logic for incident type bars — takes count, max count, and color
   Widget _incidentRow(String type, int count, int max, Color color) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -245,7 +247,7 @@ class CityDetailScreen extends StatelessWidget {
         children: [
           SizedBox(
             width: 90,
-            child: Text(type, style: const TextStyle(fontSize: 14)),
+            child: Text(type, style: const TextStyle(fontSize: 14, color: Colors.black87)),
           ),
           Expanded(
             child: ClipRRect(
@@ -261,7 +263,7 @@ class CityDetailScreen extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             '$count',
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87),
           ),
         ],
       ),

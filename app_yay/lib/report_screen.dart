@@ -51,7 +51,7 @@ class _ReportScreenState extends State<ReportScreen> {
     // make sure they actually filled in everything
     if (_selectedDate == null || _locationController.text.isEmpty || _selectedType == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('whoops - you are missing some required info!!')),
+        const SnackBar(content: Text('Whoops - you are missing some required info!!')),
       );
       return;
     }
@@ -79,7 +79,7 @@ class _ReportScreenState extends State<ReportScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF5B2D8E),
-        title: const Text('report an incident', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Report an incident', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         actions: [
           Icon(isLightMode ? Icons.light_mode : Icons.dark_mode),
           Switch(value: isLightMode, onChanged: widget.onThemeToggle),
@@ -102,12 +102,12 @@ class _ReportScreenState extends State<ReportScreen> {
             const Icon(Icons.check_circle, color: Colors.green, size: 80),
             const SizedBox(height: 20),
             const Text(
-              'report submitted',
+              'Report submitted',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             const Text(
-              'thanks for helping keep your community safe! we will let users in the area know',
+              'Thanks for helping keep your community safe! We will let users in the area know',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey, fontSize: 15),
             ),
@@ -119,7 +119,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               ),
-              child: const Text('submit again', style: TextStyle(color: Colors.white, fontSize: 16)),
+              child: const Text('Submit again', style: TextStyle(color: Colors.white, fontSize: 16)),
             ),
           ],
         ),
@@ -135,13 +135,13 @@ class _ReportScreenState extends State<ReportScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'please report what youe experienced to keep others safe...',
+            'Please report what youe experienced to keep others safe...',
             style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
           const SizedBox(height: 24),
 
           // ── date picker field ──────────────────────────────
-          _fieldLabel('date *'),
+          _fieldLabel('Date'),
           GestureDetector(
             onTap: _pickDate,
             child: Container(
@@ -160,7 +160,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     // Show chosen date or a prompt
                     _selectedDate != null
                         ? '${_selectedDate!.month}/${_selectedDate!.day}/${_selectedDate!.year}'
-                        : 'choose a date',
+                        : 'Choose a date',
                     style: TextStyle(
                       color: _selectedDate != null ? Colors.black : Colors.grey,
                       fontSize: 15,
@@ -173,7 +173,7 @@ class _ReportScreenState extends State<ReportScreen> {
           const SizedBox(height: 16),
 
            // ── location text field ────────────────────────────
-          _fieldLabel('location  *'),
+          _fieldLabel('Location'),
           _styledTextField(
             controller: _locationController,
             hint: 'e.g. Main St & 5th Ave, Minneapolis',
@@ -182,7 +182,7 @@ class _ReportScreenState extends State<ReportScreen> {
           const SizedBox(height: 16),
  
           // ── Incident type dropdown ─────────────────────────
-          _fieldLabel('type of incident *'),
+          _fieldLabel('Type of incident *'),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -194,7 +194,7 @@ class _ReportScreenState extends State<ReportScreen> {
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 value: _selectedType,
-                hint: const Text('choose incident type', style: TextStyle(color: Colors.grey)),
+                hint: const Text('Choose incident type', style: TextStyle(color: Colors.grey)),
                 isExpanded: true,
                 items: _incidentTypes.map((type) {
                   return DropdownMenuItem(value: type, child: Text(type));
@@ -206,7 +206,7 @@ class _ReportScreenState extends State<ReportScreen> {
           const SizedBox(height: 16),
  
           // ── Details text area ──────────────────────────────
-          _fieldLabel('details'),
+          _fieldLabel('Details'),
           Container(
             decoration: BoxDecoration(
               color: Colors.white,

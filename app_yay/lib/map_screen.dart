@@ -30,7 +30,7 @@ class _MapScreenState extends State<MapScreen> {
   // Safety zones in San Francisco
   final List<Map<String, dynamic>> _zones = [
     {
-      'name': 'downtown',
+      'name': 'Downtown',
       'level': 'be cautious!',
       'color': Colors.red,
       'incidents': '21 incidents reported in the last 2 weeks',
@@ -38,7 +38,7 @@ class _MapScreenState extends State<MapScreen> {
       'lng': -122.4194,
     },
     {
-      'name': 'bus stop',
+      'name': 'Bus Stop',
       'level': 'be careful!',
       'color': Colors.red,
       'incidents': '15 incidents reported in the last 2 weeks',
@@ -46,7 +46,7 @@ class _MapScreenState extends State<MapScreen> {
       'lng': -122.4094,
     },
     {
-      'name': 'north campus',
+      'name': 'North Campus',
       'level': 'moderate',
       'color': Colors.orange,
       'incidents': '8 incidents reported in the last 2 weeks',
@@ -54,7 +54,7 @@ class _MapScreenState extends State<MapScreen> {
       'lng': -122.4294,
     },
     {
-      'name': 'west campus',
+      'name': 'West Campus',
       'level': 'moderate',
       'color': Colors.orange,
       'incidents': '10 incidents reported in the last 2 weeks',
@@ -62,7 +62,7 @@ class _MapScreenState extends State<MapScreen> {
       'lng': -122.4394,
     },
     {
-      'name': 'east campus',
+      'name': 'East Campus',
       'level': 'usually safe',
       'color': Colors.green,
       'incidents': '3 incidents reported in the last 2 weeks',
@@ -70,7 +70,7 @@ class _MapScreenState extends State<MapScreen> {
       'lng': -122.4094,
     },
     {
-      'name': 'south campus',
+      'name': 'South Campus',
       'level': 'pretty safe',
       'color': Colors.green,
       'incidents': '2 incidents reported in the last 2 weeks',
@@ -86,7 +86,7 @@ class _MapScreenState extends State<MapScreen> {
       backgroundColor: isLightMode ? Colors.grey[100] : Colors.grey[900],
       appBar: AppBar(
         backgroundColor: _darkPurple,
-        title: const Text('safety heat map', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Safety heat map', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         actions: [
           Icon(isLightMode ? Icons.light_mode : Icons.dark_mode),
           Switch(value: isLightMode, onChanged: widget.onThemeToggle),
@@ -140,9 +140,9 @@ class _MapScreenState extends State<MapScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                   const SizedBox(height: 8),
-                  _LegendDot(color: Colors.green, label: 'safe'),
-                  _LegendDot(color: Colors.orange, label: 'moderate'),
-                  _LegendDot(color: Colors.red, label: 'be careful'),
+                  _LegendDot(color: Colors.green, label: 'Safe'),
+                  _LegendDot(color: Colors.orange, label: 'Moderate'),
+                  _LegendDot(color: Colors.red, label: 'Be Careful'),
                 ],
               ),
             ),
@@ -200,7 +200,7 @@ class _MapScreenState extends State<MapScreen> {
                     const SizedBox(height: 12),
                     Text(
                       _zones.firstWhere((z) => z['name'] == _selectedZone)['incidents'] as String,
-                      style: const TextStyle(fontSize: 13, color: Colors.grey),
+                      style: const TextStyle(fontSize: 13, color: Colors.black87),
                     ),
                   ],
                 ),
