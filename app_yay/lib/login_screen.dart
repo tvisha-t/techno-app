@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'widgets/safe_haven_logo.dart';
+
+// ─ Purple Aesthetic Color Palette ─────────────────────
+const Color _darkPurple = Color(0xFF5B2D8E);
+const Color _mediumPurple = Color(0xFF8A5C9C);
+const Color _lightPurple = Color(0xFFE5D4F0);
+const Color _accentPurple = Color(0xFF9C6FD6);
+// ───────────────────────────────────────────────────
 
 // login screen is for logging & signup
 // toggles betwen 2 modes using isLogin
@@ -27,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF5B2D8E), // deep purple background
+      backgroundColor: _darkPurple,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -35,18 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.shield, color: Colors.white, size: 72),
-                const SizedBox(height: 12),
-                const Text(
-                  'SafeHaven',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-                const SizedBox(height: 8),
+                const SafeHavenLogo(size: 120),
+                const SizedBox(height: 24),
                 // subtitle alternates depending on state
                 Text(
                   _isLogin ? 'welcome back!' : 'create your account!',
@@ -81,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFF5B2D8E),
+                      foregroundColor: _darkPurple,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),

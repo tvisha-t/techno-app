@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
-// global map screen, rn just placeholder w/ tappable ui
-// todo: integrate a real map package? 
+// Safety heat map screen with OpenStreetMap
 class MapScreen extends StatefulWidget {
   final ThemeMode themeMode;
   final ValueChanged<bool> onThemeToggle;
@@ -16,46 +17,65 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
+// ─ Purple Aesthetic Color Palette ─────────────────────
+const Color _darkPurple = Color(0xFF5B2D8E);
+const Color _mediumPurple = Color(0xFF8A5C9C);
+const Color _lightPurple = Color(0xFFE5D4F0);
+const Color _accentPurple = Color(0xFF9C6FD6);
+// ───────────────────────────────────────────────────
+
 class _MapScreenState extends State<MapScreen> {
   String? _selectedZone;
 
-  // placeholder zones, need to replace
+  // Safety zones in San Francisco
   final List<Map<String, dynamic>> _zones = [
     {
-      'name': 'north campus',
-      'level': 'moderate',
-      'color': Colors.orange,
-      'incidents': '8 incidents reported in the last 2 weeks',
-    },
-    {
-      'name': 'dowtown',
+      'name': 'downtown',
       'level': 'be cautious!',
       'color': Colors.red,
       'incidents': '21 incidents reported in the last 2 weeks',
-    },
-    {
-      'name': 'east campus',
-      'level': 'usually safe',
-      'color': Colors.green,
-      'incidents': '3 incidents reported in the last 2 weeks',
+      'lat': 37.7749,
+      'lng': -122.4194,
     },
     {
       'name': 'bus stop',
       'level': 'be careful!',
       'color': Colors.red,
       'incidents': '15 incidents reported in the last 2 weeks',
+      'lat': 37.7849,
+      'lng': -122.4094,
+    },
+    {
+      'name': 'north campus',
+      'level': 'moderate',
+      'color': Colors.orange,
+      'incidents': '8 incidents reported in the last 2 weeks',
+      'lat': 37.7649,
+      'lng': -122.4294,
     },
     {
       'name': 'west campus',
       'level': 'moderate',
       'color': Colors.orange,
       'incidents': '10 incidents reported in the last 2 weeks',
+      'lat': 37.7649,
+      'lng': -122.4394,
+    },
+    {
+      'name': 'east campus',
+      'level': 'usually safe',
+      'color': Colors.green,
+      'incidents': '3 incidents reported in the last 2 weeks',
+      'lat': 37.7849,
+      'lng': -122.4094,
     },
     {
       'name': 'south campus',
       'level': 'pretty safe',
       'color': Colors.green,
       'incidents': '2 incidents reported in the last 2 weeks',
+      'lat': 37.7549,
+      'lng': -122.4194,
     },
   ];
 
@@ -65,7 +85,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       backgroundColor: isLightMode ? Colors.grey[100] : Colors.grey[900],
       appBar: AppBar(
-        backgroundColor: const Color(0xFF5B2D8E),
+        backgroundColor: _darkPurple,
         title: const Text('safety heat map', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         actions: [
           Icon(isLightMode ? Icons.light_mode : Icons.dark_mode),
@@ -73,146 +93,164 @@ class _MapScreenState extends State<MapScreen> {
           Icon(isLightMode ? Icons.dark_mode : Icons.light_mode),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-            // search bar palceholder
-            // todo: wire up to map pan / zoom to searched city
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'search a city...',
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-                contentPadding: const EdgeInsets.symmetric(vertical: 0),
+          // Heat map with zones
+          FlutterMap(
+            options: MapOptions(
+              initialCenter: const LatLng(37.7749, -122.4194),
+              initialZoom: 13,
+              interactionOptions: const InteractionOptions(
+                flags: InteractiveFlag.all,
               ),
             ),
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.app_yay',
+              ),
+              CircleLayer(
+                circles: _buildHeatmapCircles(),
+              ),
+              MarkerLayer(
+                markers: _buildClickableMarkers(),
+              ),
+            ],
           ),
 
-          // ── map placeholder ──────────────────────────────────
-          // lowk just a grey box... replace w/ GoogleMap or FlutterMap widget?
-          Expanded(
-            flex: 3,
-            child: Stack(
-              children: [
-                // map background
-                Container(
-                  color: Colors.grey[300],
-                  child: const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.map, size: 64, color: Colors.grey),
-                        SizedBox(height: 12),
-                        Text(
-                          'map goes here :P',
-                          style: TextStyle(color: Colors.grey, fontSize: 18),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'todo: Integrate google_maps_flutter or flutter_map',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // color-coded chips w/ popups
-                Positioned(top: 60, left: 40, child: _zoneChip(0)),
-                Positioned(top: 120, right: 30, child: _zoneChip(1)),
-                Positioned(top: 200, left: 80, child: _zoneChip(2)),
-                Positioned(bottom: 80, left: 30, child: _zoneChip(3)),
-                Positioned(bottom: 60, right: 60, child: _zoneChip(4)),
-                Positioned(top: 280, right: 80, child: _zoneChip(5)),
-              ],
-            ),
-          ),
-
-          // ── popup ───────────────────────────────────────
-          // incident summary when a zone chip is tapped.
-          if (_selectedZone != null)
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              color: Colors.white,
-              child: Row(
+          // Legend
+          Positioned(
+            bottom: 20,
+            left: 20,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.95),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(color: _darkPurple.withOpacity(0.2), blurRadius: 6),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.info_outline, color: Color(0xFF5B2D8E)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _selectedZone!,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        Text(
-                          _zones.firstWhere((z) => z['name'] == _selectedZone)['incidents'] as String,
-                          style: const TextStyle(color: Colors.grey, fontSize: 13),
-                        ),
-                      ],
-                    ),
+                  const Text(
+                    'Safety Levels',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => setState(() => _selectedZone = null),
-                  ),
+                  const SizedBox(height: 8),
+                  _LegendDot(color: Colors.green, label: 'safe'),
+                  _LegendDot(color: Colors.orange, label: 'moderate'),
+                  _LegendDot(color: Colors.red, label: 'be careful'),
                 ],
               ),
             ),
-
-          // ── legend ───────────────────────────────────────────
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _LegendDot(color: Colors.green, label: 'safe'),
-                _LegendDot(color: Colors.orange, label: 'moderate'),
-                _LegendDot(color: Colors.red, label: 'be careful!'),
-              ],
-            ),
           ),
+
+          // Zone details overlay
+          if (_selectedZone != null)
+            Positioned(
+              top: 20,
+              left: 20,
+              right: 20,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.98),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(color: _darkPurple.withOpacity(0.25), blurRadius: 12),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _selectedZone!,
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        GestureDetector(
+                          onTap: () => setState(() => _selectedZone = null),
+                          child: const Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: _mediumPurple.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: _mediumPurple.withOpacity(0.4), width: 1),
+                      ),
+                      child: Text(
+                        _zones.firstWhere((z) => z['name'] == _selectedZone)['level'] as String,
+                        style: const TextStyle(
+                          color: _mediumPurple,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      _zones.firstWhere((z) => z['name'] == _selectedZone)['incidents'] as String,
+                      style: const TextStyle(fontSize: 13, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
 
-// helper method for tappable chip
-  Widget _zoneChip(int index) {
-    final zone = _zones[index];
-    final bool isSelected = _selectedZone == zone['name'];
-    return GestureDetector(
-      onTap: () => setState(() {
-        _selectedZone = isSelected ? null : zone['name'] as String;
-      }),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: (zone['color'] as Color).withOpacity(0.85),
-          borderRadius: BorderRadius.circular(20),
-          border: isSelected ? Border.all(color: Colors.white, width: 2) : null,
-          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
-        ),
-        child: Text(
-          zone['name'] as String,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
+  List<CircleMarker> _buildHeatmapCircles() {
+    return _zones.map((zone) {
+      return CircleMarker(
+        point: LatLng(zone['lat'] as double, zone['lng'] as double),
+        radius: 800,
+        useRadiusInMeter: true,
+        color: (zone['color'] as Color).withOpacity(0.25),
+        borderStrokeWidth: 3,
+        borderColor: zone['color'] as Color,
+      );
+    }).toList();
+  }
+
+  List<Marker> _buildClickableMarkers() {
+    return _zones.map((zone) {
+      return Marker(
+        point: LatLng(zone['lat'] as double, zone['lng'] as double),
+        child: GestureDetector(
+          onTap: () => setState(() => _selectedZone = zone['name'] as String),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: (zone['color'] as Color).withOpacity(0.9),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(color: _darkPurple.withOpacity(0.3), blurRadius: 6, offset: const Offset(0, 2)),
+              ],
+            ),
+            child: Text(
+              zone['name'] as String,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }).toList();
   }
 }
 

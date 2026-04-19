@@ -25,7 +25,7 @@ class _SosScreenState extends State<SosScreen> {
   Widget build(BuildContext context) {
     final isLightMode = widget.themeMode == ThemeMode.light;
     return Scaffold(
-      backgroundColor: _sosActivated ? Colors.red[700] : (isLightMode ? Colors.white : Colors.grey[900]),
+        backgroundColor: _sosActivated ? Colors.red[700] : (isLightMode ? Colors.grey[50] : Colors.grey[900]),
       appBar: AppBar(
         backgroundColor: _sosActivated ? Colors.red[900] : const Color(0xFF5B2D8E),
         title: const Text('SOS', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

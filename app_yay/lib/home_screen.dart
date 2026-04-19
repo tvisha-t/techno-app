@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'city_detail_screen.dart';
+import 'widgets/safe_haven_logo.dart';
 
 // note: i hardcoded placeholder city data for now so there's something to show
 // todo: replace w/ real data from crime API
@@ -38,6 +39,13 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
+// ─ Purple Aesthetic Color Palette ─────────────────────
+const Color _darkPurple = Color(0xFF5B2D8E);
+const Color _mediumPurple = Color(0xFF8A5C9C);
+const Color _lightPurple = Color(0xFFE5D4F0);
+const Color _accentPurple = Color(0xFF9C6FD6);
+// ───────────────────────────────────────────────────
 
 class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
@@ -78,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: isLightMode ? Colors.grey[100] : Colors.grey[900],
       appBar: AppBar(
-        // backgroundColor: constrr, Color(0xFF5B2D8E),
+        backgroundColor: _darkPurple,
         title: Text(
           'SafeHaven',
           style: TextStyle(
@@ -128,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ElevatedButton(
                   onPressed: () => _addCity(_searchController.text),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF5B2D8E),
+                    backgroundColor: _darkPurple,
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(14),
                   ),

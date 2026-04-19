@@ -6,6 +6,13 @@ import 'map_screen.dart';
 import 'report_screen.dart';
 import 'sos_screen.dart';
 
+// ─ Purple Aesthetic Color Palette ─────────────────────
+const Color _darkPurple = Color(0xFF5B2D8E);
+const Color _mediumPurple = Color(0xFF8A5C9C);
+const Color _lightPurple = Color(0xFFE5D4F0);
+const Color _accentPurple = Color(0xFF9C6FD6);
+// ───────────────────────────────────────────────────
+
 void main() {
   runApp(const SafeHaven());
 }
@@ -34,11 +41,17 @@ class _SafeHavenState extends State<SafeHaven> {
       debugShowCheckedModeBanner: false,
       themeMode: _themeMode,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.grey[100],
+        scaffoldBackgroundColor: Colors.grey[50],
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF5B2D8E), // deep purple
-          primary: const Color(0xFF5B2D8E),
-          secondary: const Color(0xFF9C6FD6), // lighter purple
+          seedColor: _darkPurple,
+          primary: _darkPurple,
+          secondary: _accentPurple,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _darkPurple,
+            foregroundColor: Colors.white,
+          ),
         ),
         useMaterial3: true,
       ),
@@ -46,10 +59,16 @@ class _SafeHavenState extends State<SafeHaven> {
         scaffoldBackgroundColor: Colors.grey[900],
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF5B2D8E),
-          primary: const Color(0xFF5B2D8E),
-          secondary: const Color(0xFF9C6FD6),
+          seedColor: _darkPurple,
+          primary: _darkPurple,
+          secondary: _accentPurple,
           brightness: Brightness.dark,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _darkPurple,
+            foregroundColor: Colors.white,
+          ),
         ),
         useMaterial3: true,
       ),
@@ -117,7 +136,7 @@ class _MainShellState extends State<MainShell> {
         onTap: (index) => setState(() => _currentIndex = index),
 
         type: BottomNavigationBarType.fixed, 
-        selectedItemColor: const Color(0xFF5B2D8E),
+        selectedItemColor: _darkPurple,
         unselectedItemColor: Colors.grey,
 
         items: const [
