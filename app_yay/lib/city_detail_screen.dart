@@ -80,7 +80,7 @@ class CityDetailScreen extends StatelessWidget {
             // ── monthly bar chart ────────────────────────────────
             const Text(
               'Monthly crime stats',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             const SizedBox(height: 12),
             _sectionCard(
