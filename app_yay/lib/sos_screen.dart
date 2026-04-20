@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 // sos screen but super simplified just for demo purposes
 // idle & activated states
-// todo: add real alarm sound & pin-based cancellation
 
 class SosScreen extends StatefulWidget {
   final ThemeMode themeMode;

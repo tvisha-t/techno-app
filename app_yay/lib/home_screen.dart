@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'city_detail_screen.dart';
 import 'widgets/safe_haven_logo.dart';
 
-// note: i hardcoded placeholder city data for now so there's something to show
-// todo: replace w/ real data from crime API
 // each city has a map & has a namme, score (0–100), news blurb, and safety level label
 
 class City {
@@ -84,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // city cards on dashbord starts w. the ones above
     // start w/ placeholder data
-    // TODO: allow users to add & remove cities
   List<City> _cities = List.from(_placeholderCities);
 
   // user types city name & presses +

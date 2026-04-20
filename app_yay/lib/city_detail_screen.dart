@@ -3,7 +3,6 @@ import 'home_screen.dart';
 
 // opens when a user taps a city card
 // receives 'city' map, name, score, news blurb, level, and other data
-// todo: replace placeholder data w/ real API calls per city
 
 class CityDetailScreen extends StatelessWidget {
   final City city;
@@ -120,9 +119,8 @@ class CityDetailScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── safety tips ──────────────────────────────────────
-            // TODO: use ai to generate city-specific tips
             const Text(
-              'Safety reminders -->',
+              'Safety tips',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
             const SizedBox(height: 12),
@@ -147,7 +145,6 @@ class CityDetailScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── incident type breakdown ──────────────────────────
-            // TODO: grab real incident counts from crime API
             const Text(
               'Recent incidents',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),

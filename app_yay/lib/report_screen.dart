@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 // incident reports
 // form collects date, location, type of incident, & description
-// todo: wire up submit button to send data to a database?? trigger push notif to users w/ pinned city
 class ReportScreen extends StatefulWidget {
   final ThemeMode themeMode;
   final ValueChanged<bool> onThemeToggle;
@@ -55,10 +54,6 @@ class _ReportScreenState extends State<ReportScreen> {
       );
       return;
     }
-
-// todo: HERE is where we send form data to backend i think
-// we want to send 
-    // _selectedDate, _locationController.text, _selectedType, and _detailsController.text
 
     setState(() => _submitted = true);
   }
@@ -135,7 +130,7 @@ class _ReportScreenState extends State<ReportScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Please report what youe experienced to keep others safe...',
+            'Please report what you have experienced to keep others safe...',
             style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
           const SizedBox(height: 24),

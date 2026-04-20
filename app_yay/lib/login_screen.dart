@@ -27,7 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _phoneController = TextEditingController(); // only used during signup
 
     // "submitting" the form just navigates to home for now, no real auth logic yet
-    // todo: add real auth logic here (check username/password, create account, etc.)
   void _submit() {
     Navigator.pushReplacementNamed(context, '/home');
   }
